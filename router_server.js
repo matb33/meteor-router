@@ -163,6 +163,18 @@
   var connect = __meteor_bootstrap__.require("connect");
   __meteor_bootstrap__.app
     .use(connect.query()) // <- XXX: we can probably assume accounts did this
+    .use(function(req, res, next) {
+      var data = "";
+      if (req.method === "GET" || req.method === "HEAD") return next();
+      req.setEncoding("utf8");
+      req.on("data", function(chunk) {
+        data += chunk;
+      });
+      req.on("end", function() {
+        req.rawBody = data;
+        next();
+      });
+    })
     .use(connect.bodyParser())
     .use(function(req, res, next) {
       // need to wrap in a fiber in case they do something async 
