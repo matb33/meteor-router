@@ -17,7 +17,7 @@
     // the routing function getting called multiple times, which could be
     // unexpected if it has side effects. This is essentially a memoize pattern
     self._autorunHandle && self._autorunHandle.stop();
-    self._autorunHandle = Meteor.autorun(function() {
+    self._autorunHandle = Deps.autorun(function() {
       var args = [];
       for (key in context.params)
         args.push(context.params[key]);

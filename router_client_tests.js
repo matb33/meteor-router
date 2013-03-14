@@ -39,7 +39,7 @@ Tinytest.add("Router reactivity", function(test) {
     }
   })
   
-  Meteor.autorun(function() {
+  Deps.autorun(function() {
     Meteor.Router.page();
     context_called += 1;
   });
@@ -47,16 +47,16 @@ Tinytest.add("Router reactivity", function(test) {
   test.equal(context_called, 1);
   
   Meteor.Router.to('/foo')
-  Meteor.flush()
+  Deps.flush()
   test.equal(context_called, 2);
   
   Meteor.Router.to('/bar')
-  Meteor.flush()
+  Deps.flush()
   test.equal(context_called, 3);
   
   // returns 'bar' to shouldn't trigger reactivity
   Meteor.Router.to('/bar/2')
-  Meteor.flush()
+  Deps.flush()
   test.equal(context_called, 3);
 });
 
@@ -101,11 +101,11 @@ Tinytest.add("FilteredRouter filter reactivity", function(test) {
   Meteor.Router.filter('something_else');
   
   Session.set('something_else', null);
-  Meteor.flush();
+  Deps.flush();
   Meteor.Router.to('/foo');
   test.equal(Meteor.Router.page(), 'foo');
   
   Session.set('something_else', true);
-  Meteor.flush();
+  Deps.flush();
   test.equal(Meteor.Router.page(), 'something_else');
 });
