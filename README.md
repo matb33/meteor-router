@@ -10,6 +10,8 @@ Meteor Router can be installed with [Meteorite](https://github.com/oortcloud/met
 $ mrt add router
 ```
 
+Note that Router version 0.4.3 works with Meteor 0.5.8 and later, and 0.4.2 works with Meteor 0.5.7 and earlier.
+
 ## API
 
 ### Basics
@@ -28,6 +30,7 @@ This is a reactive variable which will trigger invalidations as the app changes 
 
 To define a route, simply specify the URL it matches and the name of the template it should render. If you want to get fancy, you can specify a reactive function that returns a template name. It will get repeatedly executed as its reactive dependencies change.
 
+Be careful not to specify your routes inside the ```Meteor.startup``` function, or the routing won't work for the first load.
 ``` javascript
 Meteor.Router.add({
   '/news': 'news',
@@ -158,12 +161,11 @@ Additionally, you might want to read [my blog post](http://bindle.me/blog/index.
 ## Internet explorer 8+ support
 
 If you want the router to work in older version of Internet Explorer that don't support pushState, you can use the [HTML5-History-API](https://github.com/devote/HTML5-History-API) polyfill:
-```json
-"packages": {
-  "HTML5-History-API": {},
-  "router": {}
-}
+```bash
+  mrt add HTML5-History-API
 ```
+
+**NOTE**: Either do this before adding the router, or edit your app's `.meteor/packages` file to make sure it's listed before the router. This is a limitation that I'm working on.
 
 
 ## Contributing
